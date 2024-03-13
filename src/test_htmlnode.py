@@ -35,10 +35,30 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_to_html_value_none(self):
         node = LeafNode("p", None,{"href":"google"})
-        try:
-            node.to_html()
-        except ValueError:
-            pass
+        self.assertRaises(ValueError, node.to_html)
+
+    def test_to_html_parent(self):
+        node = ParentNode(
+    "p",
+    [
+        LeafNode("b", "Bold text", None),
+        LeafNode(None, "Normal text", None),
+        LeafNode("i", "italic text", None),
+        LeafNode(None, "Normal text", None),
+    ],
+)
+        text = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>"
+        self.assertEqual(node.to_html(), text)
+
+    
+
+    def test_to_html_tag_none(self):
+        node = ParentNode(None, LeafNode("b", "Bold text", None))
+        self.assertRaises(ValueError, node.to_html)
+
+    def test_to_html_children_none(self):
+        node = ParentNode("p", [])
+        self.assertRaises(ValueError, node.to_html)
 
 
     
