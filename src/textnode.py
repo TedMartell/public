@@ -1,3 +1,4 @@
+import re
 from htmlnode import LeafNode
 
 text_type_text = "text"
@@ -6,6 +7,12 @@ text_type_italic = "italic"
 text_type_code = "code"
 text_type_link = "link"
 text_type_image = "image"
+
+def extract_markdown_images(text):
+    return re.findall(r"!\[(.*?)\]\((.*?)\)",text)
+    
+def extract_markdown_links(text):
+    return re.findall(r"\[(.*?)\]\((.*?)\)",text)
 
 
 
@@ -41,6 +48,8 @@ class TextNode:
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         else:
             raise Exception("Invalid text_type. text_type: " + text_node.text_type)
+        
+
 
         
 
