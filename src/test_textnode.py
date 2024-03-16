@@ -2,7 +2,6 @@ import unittest
 
 
 from textnode import TextNode
-from textnode import extract_markdown_images, extract_markdown_links
 
 
 class TestTextNode(unittest.TestCase):
