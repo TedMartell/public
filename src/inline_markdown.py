@@ -6,6 +6,7 @@ from textnode import (
     text_type_italic,
     text_type_code,
     text_type_image,
+    text_type_link,
 )
 
 
@@ -58,6 +59,27 @@ def split_nodes_image(old_nodes):
         new_nodes.extend(split_nodes)
     return new_nodes
 
+def split_nodes_link(old_nodes):
+    new_nodes = []
+    if old_nodes == []:
+        return []
+    for old_node in old_nodes:
+        split_nodes = []
+        if extract_markdown_links(old_node) == []:
+            new_nodes.append(old_node)
+        links = extract_markdown_links(old_node.text)
+        remaining_text = old_node.text
+        for i in range(len(links)):
+            sections = remaining_text.split(f"[{links[i][0]}]({links[i][1]})", 1)
+            remaining_text = sections[1]
+            if sections[0] != "":
+                split_nodes.append(TextNode((sections[0].strip()), text_type_text))
+            if links[i][0] != "":
+                split_nodes.append(TextNode((links[i][0].strip()), text_type_link, links[i][1]))
+        if remaining_text != "":
+            split_nodes.append(TextNode(remaining_text.strip(), text_type_text))
+        new_nodes.extend(split_nodes)
+    return new_nodes
 
 
 
