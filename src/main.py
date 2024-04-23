@@ -1,6 +1,6 @@
 import os
 import shutil
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 # Assuming textnode is a module you're using somewhere
 
 def copy_dir(source, destination):
@@ -17,12 +17,14 @@ def copy_dir(source, destination):
 def main(): 
     source_dir = '../static'  # Note: Check these paths, they may need adjustment based on your project structure
     destination_dir = '../public'
+    dir_path_public = "../public"
+    dir_path_content = "../content"
+    template_path = "../template.html"
     copy_dir(source_dir, destination_dir)
     print("Copying static files complete!")
 
-    # Assuming your markdown file is at the correct path relative to where this script runs from
-    # And 'template.html' is also correctly located relative to this script's execution
-    generate_page("../content/index.md", "../template.html", "../public/index.html")
+    
+    generate_pages_recursive(dir_path_content, template_path, dir_path_public)
 
 
 
